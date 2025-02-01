@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.dto.AdminDTO;
 import com.example.demo.entity.Admin;
 import com.example.demo.exception.AdminNotFound;
 import com.example.demo.service.AdminService;
@@ -33,8 +34,9 @@ public class AdminController {
 	    }
 
 	    @GetMapping("/getById/{id}")
-	    public Admin getAdminById(@PathVariable int id) throws AdminNotFound{
-	        return service.getAdminById(id);
+	    public ResponseEntity<AdminDTO> getAdminById(@PathVariable int id) throws AdminNotFound{
+	    	AdminDTO dto = service.getAdminById(id);
+	        return ResponseEntity.ok(dto);
 
 	    }
 

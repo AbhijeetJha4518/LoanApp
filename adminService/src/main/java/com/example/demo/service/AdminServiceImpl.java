@@ -1,12 +1,13 @@
 package com.example.demo.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.example.demo.dto.AdminDTO;
 import com.example.demo.entity.Admin;
 import com.example.demo.exception.AdminNotFound;
+import com.example.demo.mapper.AdminMapper;
 import com.example.demo.repository.AdminRepository;
 
 import lombok.AllArgsConstructor;
@@ -24,12 +25,15 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	public Admin getAdminById(int id) throws AdminNotFound {
-		Optional<Admin> optional=repo.findById(id);
-		if(optional.isPresent())
-		return optional.get();
-		else
+	public AdminDTO getAdminById(int id) throws AdminNotFound {
+		Admin admin=repo.findById(id).orElse(null);
+		if(admin == null) {
 			throw new  AdminNotFound("Admin not found with given Id!");
+		}
+		AdminDTO dto = AdminMapper.mapToAdminDTO(admin); 
+//		AdminDTO dto = new AdminDTO(admin.getId(),admin.getName(),admin.getEmail());
+		return dto; 
+			
 	
 	}
 
@@ -42,7 +46,7 @@ public class AdminServiceImpl implements AdminService {
 	 public Admin updateAdmin(int id, Admin adminDetails) throws AdminNotFound {
         Admin admin = repo.findById(id)
                 .orElseThrow(() -> new AdminNotFound("Admin not found with id: " + id));
-        admin.setUsername(adminDetails.getUsername());
+        admin.setName(adminDetails.getName());
         admin.setPassword(adminDetails.getPassword());
         admin.setEmail(adminDetails.getEmail());
         admin.setRole(adminDetails.getRole());
