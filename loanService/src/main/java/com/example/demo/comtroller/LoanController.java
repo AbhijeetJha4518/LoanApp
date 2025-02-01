@@ -57,5 +57,11 @@ public class LoanController {
 		return service.deleteLoan(id);
 
 	}
+	
+	//This will get the loan details based on borrowers email
+	@GetMapping("/getLoanByUserId/{userId}")
+	public List<Loan> getLoanByUserId(@PathVariable int userId) {
+		return service.getLoanByUserId(userId);
+	}
 
 }

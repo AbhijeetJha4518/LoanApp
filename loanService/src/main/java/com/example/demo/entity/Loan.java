@@ -10,10 +10,14 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Loan {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,18 +39,6 @@ public class Loan {
     @Min(value = 0, message = "Interest rate must be non-negative")
     private Double interestRate;
 
-    @NotEmpty(message = "Borrower name cannot be empty")
-    @Size(min = 2, max = 100, message = "Borrower name must be between 2 and 100 characters")
-    private String borrowerName;
-
-    @NotEmpty(message = "Borrower email cannot be empty")
-    @Email(message = "Email should be valid")
-    private String borrowerEmail;
-
-    @NotEmpty(message = "Borrower phone number cannot be empty")
-    @Pattern(regexp = "^\\+?[0-9. ()-]{7,25}$", message = "Borrower phone number is invalid")
-    private String borrowerPhoneNumber;
-
-    @NotEmpty(message = "Borrower address cannot be empty")
-    private String borrowerAddress;
+    @NotNull
+    private int userId;
 }

@@ -50,10 +50,6 @@ public class LoanServiceImpl implements LoanService {
 			loan.setLoanAmount(loanDetails.getLoanAmount());
 			loan.setLoanTerm(loanDetails.getLoanTerm());
 			loan.setInterestRate(loanDetails.getInterestRate());
-			loan.setBorrowerName(loanDetails.getBorrowerName());
-			loan.setBorrowerEmail(loanDetails.getBorrowerEmail());
-			loan.setBorrowerPhoneNumber(loanDetails.getBorrowerPhoneNumber());
-			loan.setBorrowerAddress(loanDetails.getBorrowerAddress());
 			return repo.save(loan);
 		} else {
 			throw new LoanNotFound("Loan not found with id " + id);
@@ -65,6 +61,11 @@ public class LoanServiceImpl implements LoanService {
 		repo.deleteById(id);
 		return "Loan Deleted Successfully";
 
+	}
+
+	@Override
+	public List<Loan> getLoanByUserId(int userId) {
+		return repo.findLoanByUserId(userId);
 	}
 
 }

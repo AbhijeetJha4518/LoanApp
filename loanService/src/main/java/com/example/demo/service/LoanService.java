@@ -15,5 +15,7 @@ public interface LoanService {
 	public abstract Loan updateLoan(int id, Loan loanDetails) throws LoanNotFound;
 
 	public abstract String deleteLoan(int id);
+	
+	List<Loan> getLoanByUserId(int userId);
 
 }
