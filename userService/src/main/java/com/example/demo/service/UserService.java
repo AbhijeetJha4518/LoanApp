@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import java.util.List;
 
+import com.example.demo.entity.Loan;
 import com.example.demo.entity.User;
 import com.example.demo.exception.UserNotFound;
 
@@ -15,4 +16,6 @@ public interface UserService {
 	public abstract User updateUser(User user);
 
 	public abstract String deleteUser(int id);
+
+	public abstract List<Loan> getLoan(int userId);
 }

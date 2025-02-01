@@ -3,19 +3,25 @@ package com.example.demo.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.entity.Loan;
 import com.example.demo.entity.User;
 import com.example.demo.exception.UserNotFound;
+import com.example.demo.external_services.LoanServices;
 //import com.example.demo.exception.UserNotFound;
 import com.example.demo.repository.UserServiceRepo;
 
 import lombok.AllArgsConstructor;
 
 @Service
-@AllArgsConstructor
 public class UserServiceImpl implements UserService {
+	@Autowired
 	UserServiceRepo repo;
+
+	@Autowired
+	LoanServices loanServices;
 
 	@Override
 	public String createUser(User user) {
@@ -33,11 +39,12 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User getUserById(int id) throws UserNotFound {
-		Optional<User> optional = repo.findById(id); // findById provide optional product to avoid null point error
-		if (optional.isPresent())
-			return optional.get();
-		else
-			throw new UserNotFound("No Product Found with given ID!!");
+		User optional = repo.findById(id).orElse(null); // findById provide optional product to avoid null point error
+		if (optional == null) {
+			throw new UserNotFound("User not found ");
+		}
+
+		return optional;
 
 	}
 
@@ -50,6 +57,11 @@ public class UserServiceImpl implements UserService {
 	public String deleteUser(int id) {
 		repo.deleteById(id);
 		return "Product Deleted Successfully";
+	}
+
+	@Override
+	public List<Loan> getLoan(int userId) {
+		return loanServices.getLoanByUserId(userId);
 	}
 
 }
