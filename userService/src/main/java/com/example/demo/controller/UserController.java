@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.dto.UserDTO;
 import com.example.demo.entity.Loan;
 import com.example.demo.entity.User;
 import com.example.demo.exception.UserNotFound;
@@ -33,19 +34,20 @@ public class UserController {
 
 	}
 
-	@GetMapping("/getAllUser")
-	public List<User> getAllUsers() {
+	@GetMapping("/getAllUsers")
+	public List<UserDTO> getAllUsers() {
 		return service.getAllUsers();
 	}
 
 	@GetMapping("/getById/{id}")
-	public User getUserById(@PathVariable int id) throws UserNotFound {
-		return service.getUserById(id);
+	public ResponseEntity<UserDTO> getUserById(@PathVariable int id) throws UserNotFound {
+		UserDTO dto=service.getUserById(id);
+		return ResponseEntity.ok(dto);
 
 	}
 
 	@PutMapping("/update") // http://localhost:5003/users/update
-	public User updateUser(@Valid @RequestBody User user) {
+	public UserDTO updateUser(@Valid @RequestBody User user) {
 		return service.updateUser(user);
 
 	}

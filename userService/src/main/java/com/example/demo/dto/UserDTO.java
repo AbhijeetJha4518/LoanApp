@@ -7,10 +7,15 @@ import lombok.RequiredArgsConstructor;
 @Data
 @AllArgsConstructor
 @RequiredArgsConstructor
-public class AdminDTO {
-		private int id;
-	    private String name;
-	    private String email;
-	    private String role;
-	    
+public class UserDTO {
+
+	private int id;
+
+	private String name;
+
+	private String email;
+
+	private String phoneNumber;
+
+	private String address;
 }
