@@ -40,9 +40,9 @@ public class UserController {
 	}
 
 	@GetMapping("/getById/{id}")
-	public ResponseEntity<UserDTO> getUserById(@PathVariable int id) throws UserNotFound {
-		UserDTO dto=service.getUserById(id);
-		return ResponseEntity.ok(dto);
+	public UserDTO getUserById(@PathVariable int id) throws UserNotFound {
+		return service.getUserById(id);
+		
 
 	}
 
