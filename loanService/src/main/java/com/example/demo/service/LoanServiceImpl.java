@@ -11,61 +11,93 @@ import com.example.demo.repository.LoanRepository;
 
 import lombok.AllArgsConstructor;
 
+/**
+ * Implementation of the LoanService interface.
+ * This class provides the actual implementation of the methods defined in the LoanService interface.
+ */
 @Service
 @AllArgsConstructor
 public class LoanServiceImpl implements LoanService {
 
-	LoanRepository repo;
+    // Repository for Loan entities
+    LoanRepository repo;
 
-	@Override
-	public String createLoan(Loan loan) {
-		Loan loan1 = repo.save(loan);
-		if (loan1 != null)
-			return "Loan Saved Successfully";
-		else
-			return "Failed to save Loan";
-	}
+    /**
+     * Creates a new loan.
+     * @param loan The Loan entity to create.
+     * @return Success message indicating whether the loan was saved successfully.
+     */
+    @Override
+    public Loan createLoan(Loan loan) {
+        return repo.save(loan);
+        
+    }
 
-	@Override
-	public List<Loan> getAllLoans() {
-		return repo.findAll();
-	}
+    /**
+     * Fetches all loans.
+     * @return List of all Loan entities.
+     */
+    @Override
+    public List<Loan> getAllLoans() {
+        return repo.findAll();
+    }
 
-	@Override
-	public Loan getLoanById(int id) throws LoanNotFound {
-		Optional<Loan> optional = repo.findById(id);
-		if (optional.isPresent())
-			return optional.get();
-		else
-			throw new LoanNotFound("No loan found with given ID!");
+    /**
+     * Fetches a loan by ID.
+     * @param id The ID of the loan to fetch.
+     * @return The Loan entity.
+     * @throws LoanNotFound if the loan with the specified ID is not found.
+     */
+    @Override
+    public Loan getLoanById(int id) throws LoanNotFound {
+        Optional<Loan> optional = repo.findById(id);
+        if (optional.isPresent())
+            return optional.get();
+        else
+            throw new LoanNotFound("No loan found with given ID!");
+    }
 
-	}
+    /**
+     * Updates an existing loan.
+     * @param id The ID of the loan to update.
+     * @param loanDetails The updated loan details.
+     * @return The updated Loan entity.
+     * @throws LoanNotFound if the loan with the specified ID is not found.
+     */
+    @Override
+    public Loan updateLoan(int id, Loan loanDetails) throws LoanNotFound {
+        Optional<Loan> optionalLoan = repo.findById(id);
+        if (optionalLoan.isPresent()) {
+            Loan loan = optionalLoan.get();
+            loan.setLoanType(loanDetails.getLoanType());
+            loan.setLoanAmount(loanDetails.getLoanAmount());
+            loan.setLoanTerm(loanDetails.getLoanTerm());
+            loan.setInterestRate(loanDetails.getInterestRate());
+            loan.setStatus(loanDetails.getStatus());
+            return repo.save(loan);
+        } else {
+            throw new LoanNotFound("Loan not found with id " + id);
+        }
+    }
 
-	@Override
-	public Loan updateLoan(int id, Loan loanDetails) throws LoanNotFound {
-		Optional<Loan> optionalLoan = repo.findById(id);
-		if (optionalLoan.isPresent()) {
-			Loan loan = optionalLoan.get();
-			loan.setLoanType(loanDetails.getLoanType());
-			loan.setLoanAmount(loanDetails.getLoanAmount());
-			loan.setLoanTerm(loanDetails.getLoanTerm());
-			loan.setInterestRate(loanDetails.getInterestRate());
-			return repo.save(loan);
-		} else {
-			throw new LoanNotFound("Loan not found with id " + id);
-		}
-	}
+    /**
+     * Deletes a loan by ID.
+     * @param id The ID of the loan to delete.
+     * @return Success message indicating the loan was deleted.
+     */
+    @Override
+    public String deleteLoan(int id) {
+        repo.deleteById(id);
+        return "Loan Deleted Successfully";
+    }
 
-	@Override
-	public String deleteLoan(int id) {
-		repo.deleteById(id);
-		return "Loan Deleted Successfully";
-
-	}
-
-	@Override
-	public List<Loan> getLoanByUserId(int userId) {
-		return repo.findLoanByUserId(userId);
-	}
-
+    /**
+     * Fetches loans by user ID.
+     * @param userId The ID of the user to find loans for.
+     * @return List of loans associated with the specified user ID.
+     */
+    @Override
+    public List<Loan> getLoanByUserId(int userId) {
+        return repo.findLoanByUserId(userId);
+    }
 }
